@@ -1,0 +1,33 @@
+name: windows_build
+on:
+  push:
+    branches: [ main ]
+    
+jobs:
+  build:
+    name: Windows Build
+    runs-on: windows-latest
+    steps:          
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      
+      - name: Install Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.5'
+          channel: 'stable'
+          
+      - name: Import Flutter Package
+        run: |
+          flutter pub get
+          
+      - name: Build Windows App
+        run: |
+          flutter build windows --release
+        
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          type: 'zip'
+          name: VisualPhotoOrder_win_x64
+          path: build\windows\x64\runner\Release
