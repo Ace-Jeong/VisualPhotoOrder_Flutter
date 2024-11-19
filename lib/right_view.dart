@@ -193,9 +193,9 @@ class RightViewState extends State<RightView> {
 
   Widget _buildShell() {
     return Container(
-      // 컨테이너의 최대 너비를 500으로 설정
+      // 컨테이너의 최대 너비를 300으로 설정
       constraints: BoxConstraints(
-        maxWidth: 500,
+        maxWidth: 300,
       ),
       // 컨테이너의 외관을 설정 (테두리, 배경색, 모서리 둥글게)
       decoration: BoxDecoration(
