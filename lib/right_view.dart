@@ -190,108 +190,143 @@ class RightViewState extends State<RightView> {
     );
   }
 
+
   Widget _buildShell() {
     return Container(
-      width: 300,
+      // 컨테이너의 최대 너비를 500으로 설정
+      constraints: BoxConstraints(
+        maxWidth: 500,
+      ),
+      // 컨테이너의 외관을 설정 (테두리, 배경색, 모서리 둥글게)
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromARGB(255, 255, 255, 255)),
-        color: Colors.white, // 짙은 흰색 배경 설정
-        borderRadius: BorderRadius.circular(5), // 바깥 선 부분을 둥글게 처리
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(5), // 테두리를 둥글게 처리
+        // 컨테이너의 모서리를 둥글게 자름
+        borderRadius: BorderRadius.circular(5),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              child: Table(
-                border: TableBorder(
-                  top: BorderSide(color: Colors.black, width: 3),
-                  bottom: BorderSide(color: Colors.black, width: 3),
-                  left: BorderSide(color: Colors.black, width: 3),
-                  right: BorderSide(color: Colors.black, width: 3),
-                  horizontalInside: BorderSide(color: Colors.black),
-                  verticalInside: BorderSide(color: Colors.black),
+              child: ConstrainedBox(
+                // 컨테이너의 최소 및 최대 너비를 설정
+                constraints: BoxConstraints(
+                  minWidth: 300,
+                  maxWidth: 500,
                 ),
-                columnWidths: const {
-                  0: FlexColumnWidth(1),
-                  1: FlexColumnWidth(3),
-                },
-                children: [
-                  TableRow(
+                child: IntrinsicHeight(
+                  child: Column(
                     children: [
-                      const Center(
-                        child: Text('날    짜',
-                            style: TextStyle(fontSize: 14), // 텍스트 크기 조정
-                            textAlign: TextAlign.center),
-                      ),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            DateTime? picked = await showDatePicker(
-                              context: context,
-                              initialDate: selectedDate,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101),
-                            );
-                            if (picked != null && picked != selectedDate) {
-                              setState(() {
-                                selectedDate = picked;
-                              });
-                            }
-                          },
-                          child: Text(
-                            "${selectedDate.toLocal()}".split(' ')[0],
-                            style: TextStyle(fontSize: 14), // 텍스트 크기 조정
-                          ),
+                      Table(
+                        // 테이블의 테두리 설정
+                        border: TableBorder(
+                          top: BorderSide(color: Colors.black, width: 3),
+                          bottom: BorderSide(color: Colors.black, width: 3),
+                          left: BorderSide(color: Colors.black, width: 3),
+                          right: BorderSide(color: Colors.black, width: 3),
+                          horizontalInside: BorderSide(color: Colors.black),
+                          verticalInside: BorderSide(color: Colors.black),
                         ),
+                        // 테이블의 열 너비 설정
+                        columnWidths: const {
+                          0: FlexColumnWidth(1),
+                          1: FlexColumnWidth(4),
+                        },
+                        children: [
+                          TableRow(
+                            children: [
+                              TableCell(
+                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                child: Center(
+                                  child: Text('날  짜', textAlign: TextAlign.center),
+                                ),
+                              ),
+                              Center(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    // 날짜 선택기 표시
+                                    DateTime? picked = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate,
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(2101),
+                                    );
+                                    if (picked != null && picked != selectedDate) {
+                                      setState(() {
+                                        selectedDate = picked;
+                                      });
+                                    }
+                                  },
+                                  child: Text(
+                                    "${selectedDate.toLocal()}".split(' ')[0],
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              TableCell(
+                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                child: Center(
+                                  child: Text('장  소', textAlign: TextAlign.center),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: constraints.maxWidth,
+                                  ),
+                                  child: TextField(
+                                    controller: placeController,
+                                    maxLines: null,
+                                    textAlign: TextAlign.left,
+                                    decoration: const InputDecoration(
+                                      hintText: '장소 입력',
+                                      border: InputBorder.none,
+                                    ),
+                                    style: TextStyle(fontSize: 14, height: 1.5),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              TableCell(
+                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                child: Center(
+                                  child: Text('내  용', textAlign: TextAlign.center),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: constraints.maxWidth,
+                                  ),
+                                  child: TextField(
+                                    controller: contentController,
+                                    maxLines: null,
+                                    textAlign: TextAlign.left,
+                                    decoration: const InputDecoration(
+                                      hintText: '내용 입력',
+                                      border: InputBorder.none,
+                                    ),
+                                    style: TextStyle(fontSize: 14, height: 1.5),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  TableRow(
-                    children: [
-                      const Center(
-                        child: Text('장    소',
-                            style: TextStyle(fontSize: 14), // 텍스트 크기 조정
-                            textAlign: TextAlign.center),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: placeController,
-                          maxLines: null, // 줄바꿈 허용
-                          textAlign: TextAlign.left, // 텍스트 좌측 정렬
-                          decoration: const InputDecoration(
-                            hintText: '장소 입력',
-                            border: InputBorder.none, // 입력 박스의 테두리 선을 투명으로 설정
-                          ),
-                          style: TextStyle(fontSize: 14), // 텍스트 크기 조정
-                        ),
-                      ),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      const Center(
-                        child: Text('내    용',
-                            style: TextStyle(fontSize: 14), // 텍스트 크기 조정
-                            textAlign: TextAlign.center),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: contentController,
-                          maxLines: null, // 줄바꿈 허용
-                          textAlign: TextAlign.left, // 텍스트 좌측 정렬
-                          decoration: const InputDecoration(
-                            hintText: '내용 입력',
-                            border: InputBorder.none, // 입력 박스의 테두리 선을 투명으로 설정
-                          ),
-                          style: TextStyle(fontSize: 14), // 텍스트 크기 조정
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             );
           },
