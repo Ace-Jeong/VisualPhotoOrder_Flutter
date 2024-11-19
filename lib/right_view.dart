@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:split_view/split_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
@@ -27,6 +28,7 @@ class RightViewState extends State<RightView> {
   final double distanceThreshold = 2.24; // 5 제곱미터의 루트 (약 2.24mm)
 
   Offset initialPosition = Offset(0, 0); // 초기 위치를 저장할 변수 추가
+  GlobalKey imageKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +55,27 @@ class RightViewState extends State<RightView> {
         }
       },
       children: [
-        widget.selectedImg.isEmpty
-            ? const Center(child: Text("이미지를 선택하세요"))
-            : Stack(
-                children: [
-                  Center(child: Image.file(File(widget.selectedImg))),
-                  _draggableShell(context),
-                ],
-              ),
+        Column(
+          children: [
+            Row(
+              children: [
+                ElevatedButton(onPressed: () {}, child: Text("test")),
+                ElevatedButton(onPressed: () {}, child: Text("test")),
+              ],
+            ),
+            Stack(
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: widget.selectedImg.isEmpty
+                      ? null
+                      : Image.file(key: imageKey, File(widget.selectedImg)),
+                ),
+                _draggableShell(context),
+              ],
+            ),
+          ],
+        ),
         Row(
           children: [
             Expanded(
@@ -76,24 +91,23 @@ class RightViewState extends State<RightView> {
                     Expanded(
                       flex: 7,
                       child: Container(
-                        width: 200,
-                        height: 50,
-                        child: TextField(
-                          maxLines: 1,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z0-9_]'))
-                          ],
-                          decoration: const InputDecoration(
-                            hintText: "파일명 입력",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            final single = ItemSingleton();
-                            single.saveName = value;
-                          },
-                        ),
-                      ),
+                          width: 200,
+                          height: 50,
+                          child: TextField(
+                            maxLines: 1,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z0-9_]'))
+                            ],
+                            decoration: const InputDecoration(
+                              hintText: "파일명 입력",
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (value) {
+                              final single = ItemSingleton();
+                              single.saveName = value;
+                            },
+                          )),
                     ),
                   ],
                 ),
@@ -141,6 +155,18 @@ class RightViewState extends State<RightView> {
   Widget _draggableShell(BuildContext context) {
     double imageWidth = MediaQuery.of(context).size.width;
     double imageHeight = MediaQuery.of(context).size.height;
+
+    // 이미지 렌더 박스에서 시작 위치 찾기
+    if (imageKey.currentContext == null) {
+      return Container(
+        width: double.infinity,
+        color: Colors.black,
+      );
+    }
+
+    final RenderBox renderBox =
+        imageKey.currentContext!.findRenderObject() as RenderBox;
+    final imagePosition = renderBox.localToGlobal(Offset.zero);
 
     return Positioned(
       top: position.dy,
@@ -190,7 +216,6 @@ class RightViewState extends State<RightView> {
     );
   }
 
-
   Widget _buildShell() {
     return Container(
       // 컨테이너의 최대 너비를 300으로 설정
@@ -237,9 +262,11 @@ class RightViewState extends State<RightView> {
                           TableRow(
                             children: [
                               TableCell(
-                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                verticalAlignment:
+                                    TableCellVerticalAlignment.middle,
                                 child: Center(
-                                  child: Text('날  짜', textAlign: TextAlign.center),
+                                  child:
+                                      Text('날  짜', textAlign: TextAlign.center),
                                 ),
                               ),
                               Center(
@@ -252,7 +279,8 @@ class RightViewState extends State<RightView> {
                                       firstDate: DateTime(2000),
                                       lastDate: DateTime(2101),
                                     );
-                                    if (picked != null && picked != selectedDate) {
+                                    if (picked != null &&
+                                        picked != selectedDate) {
                                       setState(() {
                                         selectedDate = picked;
                                       });
@@ -269,9 +297,11 @@ class RightViewState extends State<RightView> {
                           TableRow(
                             children: [
                               TableCell(
-                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                verticalAlignment:
+                                    TableCellVerticalAlignment.middle,
                                 child: Center(
-                                  child: Text('장  소', textAlign: TextAlign.center),
+                                  child:
+                                      Text('장  소', textAlign: TextAlign.center),
                                 ),
                               ),
                               Padding(
@@ -297,9 +327,11 @@ class RightViewState extends State<RightView> {
                           TableRow(
                             children: [
                               TableCell(
-                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                verticalAlignment:
+                                    TableCellVerticalAlignment.middle,
                                 child: Center(
-                                  child: Text('내  용', textAlign: TextAlign.center),
+                                  child:
+                                      Text('내  용', textAlign: TextAlign.center),
                                 ),
                               ),
                               Padding(
