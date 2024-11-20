@@ -1,3 +1,4 @@
+//객체지향 패턴 중 싱글톤 패턴을 사용하여 ItemClass를 관리하는 클래스
 import 'dart:io';
 
 import 'package:flutter/material.dart';
