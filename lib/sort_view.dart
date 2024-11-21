@@ -1,37 +1,38 @@
-import 'dart:io';
+import 'dart:io'; // 파일 입출력을 위한 라이브러리
 
-import 'package:desktop_window/desktop_window.dart';
-import 'package:flutter/material.dart';
-import 'package:context_menus/context_menus.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_window_close/flutter_window_close.dart';
-import 'package:split_view/split_view.dart';
+import 'package:desktop_window/desktop_window.dart'; // 데스크탑 창 크기 설정을 위한 라이브러리
+import 'package:flutter/material.dart'; // Flutter의 기본 UI 라이브러리
+import 'package:context_menus/context_menus.dart'; // 컨텍스트 메뉴를 위한 라이브러리
+import 'package:flutter/services.dart'; // 시스템 서비스 관련 라이브러리
+import 'package:flutter/widgets.dart'; // Flutter 기본 위젯 라이브러리
+import 'package:flutter_window_close/flutter_window_close.dart'; // 창 닫힘 이벤트를 처리하기 위한 라이브러리
+import 'package:split_view/split_view.dart'; // SplitView 위젯을 사용하기 위한 라이브러리
 
-import 'MenuEntry.dart';
-import 'Model/ItemSingleton.dart';
-import 'left_view.dart';
-import 'right_view.dart';
+import 'MenuEntry.dart'; // MenuEntry 클래스
+import 'Model/ItemSingleton.dart'; // ItemSingleton 클래스
+import 'left_view.dart'; // LeftView 위젯
+import 'right_view.dart'; // RightView 위젯
 
 class SortView extends StatefulWidget {
-  static const routeName = '/sort_view';
+  static const routeName = '/sort_view'; // 경로 이름 정의
   const SortView({Key? key}) : super(key: key);
 
   @override
-  SortViewState createState() => SortViewState();
+  SortViewState createState() => SortViewState(); // 상태 생성
 }
 
 class SortViewState extends State<SortView> {
-  ShortcutRegistryEntry? _shortcutsEntry;
-  String selectedImg = "";
-  double weight = 0.8;
-  bool onCloseDialog = false;
+  ShortcutRegistryEntry? _shortcutsEntry; // 단축키 레지스트리 엔트리
+  String selectedImg = ""; // 선택된 이미지 경로
+  double weight = 0.8; // SplitView의 가중치
+  bool onCloseDialog = false; // 창 닫힘 다이얼로그 상태
 
   @override
   void initState() {
     super.initState();
-    DesktopWindow.setWindowSize(const Size(900, 600));
+    DesktopWindow.setWindowSize(const Size(900, 600)); // 초기 창 크기 설정
 
+    // 창 닫힘 이벤트 핸들러 설정
     FlutterWindowClose.setWindowShouldCloseHandler(() async {
       if (onCloseDialog) return false;
 
@@ -40,6 +41,7 @@ class SortViewState extends State<SortView> {
     });
   }
 
+  // 창 닫힘 확인 다이얼로그
   Future<bool> checkWhenClose() async {
     return await showDialog(
         context: context,
@@ -49,7 +51,7 @@ class SortViewState extends State<SortView> {
               actions: [
                 ElevatedButton(
                     onPressed: () async {
-                      await ItemSingleton().saveAll(context);
+                      await ItemSingleton().saveAll(context); // 저장
                       if (context.mounted) {
                         onCloseDialog = false; // 상태 초기화
                         Navigator.of(context).pop(true);
@@ -69,32 +71,34 @@ class SortViewState extends State<SortView> {
         });
   }
 
+  // SplitView 빌드
   SplitView buildMainContainer(BuildContext context) {
     return SplitView(
-      viewMode: SplitViewMode.Horizontal,
-      indicator: const SplitIndicator(viewMode: SplitViewMode.Horizontal),
+      viewMode: SplitViewMode.Horizontal, // 수평 모드로 설정
+      indicator: const SplitIndicator(viewMode: SplitViewMode.Horizontal), // 인디케이터 설정
       activeIndicator: const SplitIndicator(
         viewMode: SplitViewMode.Horizontal,
         isActive: true,
       ),
       controller: SplitViewController(
-          weights: [null, weight],
-          limits: [null, WeightLimit(min: 0.6, max: 0.9)]),
+          weights: [null, weight], // 가중치 설정
+          limits: [null, WeightLimit(min: 0.6, max: 0.9)]), // 가중치 제한
       onWeightChanged: (w) {
         double? wei = List.of(w)[1];
         if (wei != null) {
-          weight = wei;
+          weight = wei; // 가중치 업데이트
         } else {
-          weight = 0.8;
+          weight = 0.8; // 기본 가중치 설정
         }
       },
       children: [
-        const Center(child: LeftView()),
-        RightView(selectedImg: selectedImg),
+        const Center(child: LeftView()), // 왼쪽 뷰
+        RightView(selectedImg: selectedImg), // 오른쪽 뷰
       ],
     );
   }
 
+  // 메뉴바 빌드
   ContextMenuOverlay buildMenuBar(BuildContext context) {
     return ContextMenuOverlay(
         buttonStyle: const ContextMenuButtonStyle(
@@ -103,12 +107,12 @@ class SortViewState extends State<SortView> {
         ),
         child: Scaffold(
             backgroundColor: Colors.grey,
-            body: Platform.isMacOS
+            body: Platform.isMacOS // 플랫폼에 따라 메뉴바 빌드
                 ? buildMacMenuBar(context)
                 : buildNonMacMenuBar(context)));
   }
 
-  // For MacOS MenuBar
+  // MacOS용 메뉴바 빌드
   PlatformMenuBar buildMacMenuBar(BuildContext context) {
     return PlatformMenuBar(menus: <PlatformMenuItem>[
       PlatformMenu(
@@ -131,7 +135,7 @@ class SortViewState extends State<SortView> {
                 onSelected: () async {
                   bool isClose = await checkWhenClose();
                   if (isClose) {
-                    exit(0);
+                    exit(0); // 애플리케이션 종료
                   }
                 },
                 shortcut:
@@ -147,7 +151,7 @@ class SortViewState extends State<SortView> {
     ], child: buildMainContainer(context));
   }
 
-  // For Non-MacOS platform menubar
+  // Non-MacOS용 메뉴바 빌드
   Column buildNonMacMenuBar(BuildContext context) {
     return Column(
       children: [
@@ -156,7 +160,7 @@ class SortViewState extends State<SortView> {
           children: <Widget>[
             Expanded(
               child: MenuBar(
-                children: MenuEntry.build(_getMenus()),
+                children: MenuEntry.build(_getMenus()), // 메뉴 항목 빌드
               ),
             ),
           ],
@@ -166,6 +170,7 @@ class SortViewState extends State<SortView> {
     );
   }
 
+  // 메뉴 항목 생성
   List<MenuEntry> _getMenus() {
     final List<MenuEntry> result = <MenuEntry>[
       MenuEntry(
@@ -186,7 +191,7 @@ class SortViewState extends State<SortView> {
             onPressed: () async {
               bool isClose = await checkWhenClose();
               if (isClose) {
-                exit(0);
+                exit(0); // 애플리케이션 종료
               }
             },
             shortcut:
@@ -196,6 +201,7 @@ class SortViewState extends State<SortView> {
       ),
     ];
 
+    // 단축키 등록
     _shortcutsEntry?.dispose();
     _shortcutsEntry =
         ShortcutRegistry.of(context).addAll(MenuEntry.shortcuts(result));
@@ -204,6 +210,6 @@ class SortViewState extends State<SortView> {
 
   @override
   Widget build(BuildContext context) {
-    return buildMenuBar(context);
+    return buildMenuBar(context); // 메뉴바 빌드
   }
 }
