@@ -1,0 +1,31 @@
+●수정전
+                  TableRow(
+                    children: [
+                      const Center(
+                        child: Text('날    짜',
+                            style: TextStyle(fontSize: 14), // 텍스트 크기 조정
+                            textAlign: TextAlign.center),
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: selectedDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
+                            );
+                            if (picked != null && picked != selectedDate) {
+                              setState(() {
+                                selectedDate = picked;
+                              });
+                            }
+                          },
+                          child: Text(
+                            "${selectedDate.toLocal()}".split(' ')[0],
+                            style: TextStyle(fontSize: 14), // 텍스트 크기 조정
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),

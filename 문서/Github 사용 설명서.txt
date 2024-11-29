@@ -1,0 +1,95 @@
+-- 실행시 반드시 지켜야 할 사항 --
+0. 로그인 해서 정보 확인하는 곳: https://github.com/
+0-1. github 데스크탑 다운로드 설치: https://docs.github.com/ko/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop
+0-2. Powershell 모드에서는 실행 안됨
+-------------------------------------------------------------------------------------------------- 
+
+-- 명령어 실행 환경 --
+1. 1. 관리자 모드로 CMD 실행
+2. 프로젝트가 있는 폴더로 이동(예: C:\Users\comda\Downloads\VisualPhotoOrder_Flutter-main)
+3. Git 명령어 실행
+-------------------------------------------------------------------------------------------------- 
+
+[완전 초기에 한번 올릴 때]
+★Login 정보 설정
+git config --global user.email "comdado@hotmail.com"
+git config --global user.name "comdado" 
+
+★이 명령들은 로컬의 프로젝트 폴더에서 실행 해야 함
+[1번만]git init -> 지금부터 git에 있는 폴더에 로컬 폴더에 있는 것을 동기화 하겠다.(한번만 하면 계속 적용됨)[새로운 프로젝트 만들때 한번씩 해주면 됨]
+git add . ->지금 로컬에 있는 현재 폴더의 모든 파일을(하위폴더 포함) 대상으로 동기화 하겠다.
+git commit -m "first commit[VisualPhotoOrder_Flutter] " -> 현재 로컬에서 어떤 작업을 했는지 설명
+//git pull -> git에 있는 소스를 로컬로 가져오는 역할
+[1번만]git branch -M main -> 여러 사람이 만들어서 나중에 합치는데, 여기에서는 main이라는 이름으로 처음으로 만든다. 
+
+로그인: [1번만]git remote add origin https://github.com/Ace-Jeong/VisualPhotoOrder_Flutter.git -> 깃에 내가 만들어 놓은 폴더 위치를 알려주는 역할, 그리고 Link 이름을 origin이라고 지정
+- Error: GitHub 서버에 이미 있다면 오류가 남 
+
+git push origin main -> 로컬에 있는 것을 올리는 역할(위의 별명:origin Link에 올리겠다.
+-------------------------------------------------------------------------------------------------- 
+
+[Link가 끊어 졌거나, 없을 때]
+★git remote remove origin -> git remote add origin https://github.com/Ace-Jeong/VisualPhotoOrder_Flutter.git에서 지정해준 github URL 경로를 삭제하는 명령
+-------------------------------------------------------------------------------------------------- 
+
+[다운로드 받을 때-github에서 내릴 때]
+○전혀 없을 때(clone을 했을 때)
+git clone https://github.com/Ace-Jeong/VisualPhotoOrder_Flutter.git
+git add .
+git commit -m "first commit[VisualPhotoOrder_Flutter]"
+git remote add origin https://github.com/Ace-Jeong/VisualPhotoOrder_Flutter.git
+git push origin main
+-------------------------------------------------------------------------------------------------- 
+
+○GitHub 서버에서 다운 받을 때
+git pull
+-------------------------------------------------------------------------------------------------- 
+
+●[무조건 올리기]로컬에서 수정 후 반드시 해줘야 할 명령
+git add .
+git commit -m "first commit[VisualPhotoOrder_Flutter]"
+//git remote add origin https://github.com/Ace-Jeong/VisualPhotoOrder_Flutter.git
+git push origin main
+-------------------------------------------------------------------------------------------------- 
+
+★GitHub에서 로그아웃
+Git에서는 특정한 "로그아웃" 명령어가 없어요. 하지만 저장된 자격 증명을 삭제하거나 자격 증명 캐시를 지우고 싶으시다면 아래와 같은 방법을 사용할 수 있어요:
+  - 자격증명 캐시 지우기
+git credential-cache exit 
+
+  - Git 자격 증명 스토어에서 자격 증명 제거:
+git credential reject 
+
+  - Windows 자격 증명 관리자에서 자격 증명 제거: Windows 사용자의 경우, 자격 증명 관리자를 열어 저장된 Git 자격 증명을 수동으로 제거할 수 있습니다.
+---------------------------------------------------------------------------------------------- 
+
+=> ●[무조건 올리기]로컬에서 수정 후 반드시 해줘야 할 명령에서 오류가 날 때 해결 방법 
+
+★GitHub 웹에서 프로젝트 지우기
+Login: 
+Password: 
+
+[추가]
+1. 좌측 상단 고양이 그림 "클릭"
+2. "New" "클릭"
+  - Owner*                Repository name*
+    Ace-Jeongg   /   VisualPhotoOrder_Flutter(고유이름) => 프로젝트 이름 추가
+  - Public: 모두에게 공개(무료)
+  - Private: 나만 봄(유료)
+  - "Create repository" "클릭" 
+
+[삭제]
+1. Top repositories 내용에서 지우고자 하는 프로젝트 클릭
+2. 오른쪽 상단 "Settings" 클릭
+3. 가장 아래, 하단으로 이동
+  - "Delete this repository" "클릭"
+  - "I want to delete this repository" "클릭"
+  - "I have read and understand these effects" "클릭"
+  - 예: To confirm, type "Ace-Jeong/ConsoleApplication1" in the box below
+  - 아래 박스에 그대로 붙여 넣는다.
+  - "Ace-Jeong/ConsoleApplication1" => 붙여 넣음
+  - "Delete this repository" "클릭"
+  - 삭제됨
+
+
+---------------------------------------------------------------------------------------------- 

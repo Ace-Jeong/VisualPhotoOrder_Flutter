@@ -1,0 +1,14 @@
+[질문]
+1. 이 코드에 대해 자세한 설명을 주석으로 최소 단위의 코드별로 달아줘
+2. 입력된 소스에 대해서 자세한 설명을 주석으로 달아주되
+
+3. left_view.dart 소스를 입력해 줄테니 답변하지 말고 기억해줘
+4. 다음 입력 기다려줘
+
+[오류스정]
+right_view.dart 파일에 "Bottom overflowed by 148 pixcels" 라는 오류가 뜨는데 어디를 어떻게 수정해야 하는지 수정해서 보여줘
+수정한 코드만 보여줘
+
+계속해줘
+
+right_view.dart 파일에서 "BOTTOM OVERFLOWED BY 22 PIXELS" 오류 메시지가 나와, 코드를 수정해주고, 어디를 어떻게 수정 했는지 "BOTTOM OVERFLOWED BY 22 PIXELS" 메시지를 포함해서, 역할 등을 주석으로 달아줘
