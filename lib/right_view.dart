@@ -13,7 +13,8 @@ import 'dart:math'; // 수학 관련 함수 제공 라이브러리
 
 // RightView 클래스 정의: StatefulWidget을 상속받아 상태를 가질 수 있는 위젯을 정의
 class RightView extends StatefulWidget {
-  const RightView({Key? key, required this.selectedImg}) : super(key: key); // 생성자 정의, selectedImg 파라미터 필수
+  const RightView({Key? key, required this.selectedImg})
+      : super(key: key); // 생성자 정의, selectedImg 파라미터 필수
   final String selectedImg; // 이미지 파일 경로
 
   @override
@@ -23,8 +24,10 @@ class RightView extends StatefulWidget {
 // RightViewState 클래스 정의: 상태를 관리
 class RightViewState extends State<RightView> {
   double weight = 0.2; // 스플릿 뷰의 가중치 설정
-  final TextEditingController placeController = TextEditingController(); // 장소 입력을 위한 컨트롤러
-  final TextEditingController contentController = TextEditingController(); // 내용 입력을 위한 컨트롤러
+  final TextEditingController placeController =
+      TextEditingController(); // 장소 입력을 위한 컨트롤러
+  final TextEditingController contentController =
+      TextEditingController(); // 내용 입력을 위한 컨트롤러
   DateTime selectedDate = DateTime.now(); // 현재 날짜를 저장
   Offset position = Offset(0, 0); // 테이블의 초기 위치
   final double magnetThreshold = 3.0; // 자석 기능이 발동하는 거리
@@ -42,7 +45,8 @@ class RightViewState extends State<RightView> {
     // SplitView 위젯을 반환: 수직 모드로 설정
     return SplitView(
       viewMode: SplitViewMode.Vertical, // 스플릿 뷰를 수직 모드로 설정
-      indicator: const SplitIndicator(viewMode: SplitViewMode.Vertical), // 수직 모드 인디케이터
+      indicator:
+          const SplitIndicator(viewMode: SplitViewMode.Vertical), // 수직 모드 인디케이터
       activeIndicator: const SplitIndicator(
         viewMode: SplitViewMode.Vertical,
         isActive: true,
@@ -90,7 +94,9 @@ class RightViewState extends State<RightView> {
                     alignment: Alignment.topLeft, // 상단 왼쪽 정렬
                     child: widget.selectedImg.isEmpty
                         ? null
-                        : Image.file(key: imageKey, File(widget.selectedImg)), // 이미지 파일 표시
+                        : Image.file(
+                            key: imageKey,
+                            File(widget.selectedImg)), // 이미지 파일 표시
                   ),
                   if (showTable)
                     _draggableShell(context), // showTable이 true일 때만 테이블 표시
@@ -109,7 +115,8 @@ class RightViewState extends State<RightView> {
                   children: [
                     const Expanded(
                       flex: 3,
-                      child: Text("파일명", style: TextStyle(fontSize: 18)), // 파일명 입력 텍스트
+                      child: Text("파일명",
+                          style: TextStyle(fontSize: 18)), // 파일명 입력 텍스트
                     ),
                     Expanded(
                       flex: 7,
@@ -150,7 +157,8 @@ class RightViewState extends State<RightView> {
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.green, // 버튼 텍스트 색상
-                            side: const BorderSide(color: Colors.green), // 버튼 테두리 색상
+                            side: const BorderSide(
+                                color: Colors.green), // 버튼 테두리 색상
                             textStyle: const TextStyle(fontSize: 20), // 텍스트 스타일
                             padding: const EdgeInsets.all(3), // 내부 패딩
                             shape: RoundedRectangleBorder(
@@ -235,12 +243,14 @@ class RightViewState extends State<RightView> {
             if (position.dx < 0) {
               position = Offset(0, position.dy); // 왼쪽 경계를 넘지 않도록
             } else if (position.dx > imageWidth - 600) {
-              position = Offset(imageWidth - 600, position.dy); // 오른쪽 경계를 넘지 않도록
+              position =
+                  Offset(imageWidth - 600, position.dy); // 오른쪽 경계를 넘지 않도록
             }
             if (position.dy < 0) {
               position = Offset(position.dx, 0); // 상단 경계를 넘지 않도록
             } else if (position.dy > imageHeight - 150) {
-              position = Offset(position.dx, imageHeight - 150); // 하단 경계를 넘지 않도록
+              position =
+                  Offset(position.dx, imageHeight - 150); // 하단 경계를 넘지 않도록
             }
             // 이동 범위를 실제 이미지 크기로 한정 끝
           });
@@ -264,7 +274,8 @@ class RightViewState extends State<RightView> {
       // 컨테이너의 외관을 설정 (테두리, 배경색, 모서리 둥글게)
       decoration: BoxDecoration(
         color: Colors.white, // 완전히 불투명한 흰색 배경
-        border: Border.all(color: const Color.fromARGB(255, 255, 255, 255)), // 흰색 테두리
+        border: Border.all(
+            color: const Color.fromARGB(255, 255, 255, 255)), // 흰색 테두리
         borderRadius: BorderRadius.circular(5), // 모서리를 둥글게 설정
       ),
       child: ClipRRect(
@@ -302,9 +313,11 @@ class RightViewState extends State<RightView> {
                             TableRow(
                               children: [
                                 TableCell(
-                                  verticalAlignment: TableCellVerticalAlignment.middle,
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
                                   child: Center(
-                                    child: Text('날  짜', textAlign: TextAlign.center),
+                                    child: Text('날  짜',
+                                        textAlign: TextAlign.center),
                                   ),
                                 ),
                                 Center(
@@ -317,7 +330,8 @@ class RightViewState extends State<RightView> {
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2101),
                                       );
-                                      if (picked != null && picked != selectedDate) {
+                                      if (picked != null &&
+                                          picked != selectedDate) {
                                         setState(() {
                                           selectedDate = picked;
                                         });
@@ -334,9 +348,11 @@ class RightViewState extends State<RightView> {
                             TableRow(
                               children: [
                                 TableCell(
-                                  verticalAlignment: TableCellVerticalAlignment.middle,
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
                                   child: Center(
-                                    child: Text('장  소', textAlign: TextAlign.center),
+                                    child: Text('장  소',
+                                        textAlign: TextAlign.center),
                                   ),
                                 ),
                                 Padding(
@@ -359,15 +375,21 @@ class RightViewState extends State<RightView> {
                                         maxLines: 1,
                                         textDirection: TextDirection.ltr,
                                       );
-                                      textPainter.layout(minWidth: 0, maxWidth: double.infinity);
-                                      int textSize = textPainter.size.width.toInt();
+                                      textPainter.layout(
+                                          minWidth: 0,
+                                          maxWidth: double.infinity);
+                                      int textSize =
+                                          textPainter.size.width.toInt();
 
                                       setState(() {
                                         if (textSize > 500) {
                                           tableWidth = 500;
-                                          placeController.value = TextEditingValue(
+                                          placeController.value =
+                                              TextEditingValue(
                                             text: value,
-                                            selection: TextSelection.collapsed(offset: placeController.selection.baseOffset),
+                                            selection: TextSelection.collapsed(
+                                                offset: placeController
+                                                    .selection.baseOffset),
                                           );
                                         } else if (textSize > 400) {
                                           tableWidth = textSize;
@@ -383,15 +405,18 @@ class RightViewState extends State<RightView> {
                             TableRow(
                               children: [
                                 TableCell(
-                                  verticalAlignment: TableCellVerticalAlignment.middle,
+                                  verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
                                   child: Center(
-                                    child: Text('내  용', textAlign: TextAlign.center),
+                                    child: Text('내  용',
+                                        textAlign: TextAlign.center),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(1.0),
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints(maxWidth: constraints.maxWidth),
+                                    constraints: BoxConstraints(
+                                        maxWidth: constraints.maxWidth),
                                     child: TextField(
                                       controller: contentController,
                                       maxLines: null,
@@ -400,7 +425,8 @@ class RightViewState extends State<RightView> {
                                         hintText: '내용 입력',
                                         border: InputBorder.none,
                                       ),
-                                      style: TextStyle(fontSize: 14, height: 1.5),
+                                      style:
+                                          TextStyle(fontSize: 14, height: 1.5),
                                     ),
                                   ),
                                 ),
@@ -424,13 +450,18 @@ class RightViewState extends State<RightView> {
   Future<void> _saveImageWithTable() async {
     try {
       // 이미지 파일 불러오기
-      final image = img.decodeImage(await File(widget.selectedImg).readAsBytes());
+      final image =
+          img.decodeImage(await File(widget.selectedImg).readAsBytes());
       if (image != null) {
         // RenderRepaintBoundary를 통해 테이블 이미지를 생성
-        final RenderRepaintBoundary boundary = boundaryKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-        final ui.Image tableImage = await boundary.toImage(pixelRatio: 5.0); // 해상도를 높임
-        final ByteData? byteData = await tableImage.toByteData(format: ui.ImageByteFormat.png);
-        if (byteData == null) throw Exception('Failed to convert table image to byte data');
+        final RenderRepaintBoundary boundary = boundaryKey.currentContext!
+            .findRenderObject() as RenderRepaintBoundary;
+        final ui.Image tableImage =
+            await boundary.toImage(pixelRatio: 5.0); // 해상도를 높임
+        final ByteData? byteData =
+            await tableImage.toByteData(format: ui.ImageByteFormat.png);
+        if (byteData == null)
+          throw Exception('Failed to convert table image to byte data');
 
         final Uint8List tablePngBytes = byteData.buffer.asUint8List();
         final img.Image? tableImg = img.decodeImage(tablePngBytes);
@@ -440,7 +471,8 @@ class RightViewState extends State<RightView> {
         final img.Image resizedTableImg = img.copyResize(tableImg, width: 400);
 
         // 테이블 위치 계산
-        final RenderBox renderBox = imageKey.currentContext!.findRenderObject() as RenderBox;
+        final RenderBox renderBox =
+            imageKey.currentContext!.findRenderObject() as RenderBox;
         final double scale = renderBox.size.width / image.width;
         final int tableX = (position.dx / scale).round();
         final int tableY = (position.dy / scale).round();
@@ -448,7 +480,8 @@ class RightViewState extends State<RightView> {
         // 원본 이미지와 테이블 이미지를 합침
         final combinedImage = img.Image(image.width, image.height);
         img.copyInto(combinedImage, image, dstX: 0, dstY: 0);
-        img.copyInto(combinedImage, resizedTableImg, dstX: tableX, dstY: tableY);
+        img.copyInto(combinedImage, resizedTableImg,
+            dstX: tableX, dstY: tableY);
 
         // "Photo save" 폴더를 생성하고 파일을 저장할 경로를 설정
         final imageFile = File(widget.selectedImg);
@@ -457,7 +490,8 @@ class RightViewState extends State<RightView> {
           photoSaveDir.createSync();
         }
         final path = '${photoSaveDir.path}/${imageFile.uri.pathSegments.last}';
-        await File(path).writeAsBytes(img.encodePng(combinedImage)); // PNG 형식으로 저장
+        await File(path)
+            .writeAsBytes(img.encodePng(combinedImage)); // PNG 형식으로 저장
 
         // 저장 성공 메시지를 표시
         if (mounted) {
